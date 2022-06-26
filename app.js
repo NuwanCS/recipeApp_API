@@ -26,14 +26,14 @@ app.get('/api/recipes/:id', (req, res)=>{
 
 app.post('/api/recipes', (req, res)=>{
 
-    const schema = {
+    const schema = Joi.object({
         name: Joi.string().min(3).required()
-    }
+    })
 
-    const result = Joi.validate(req.body, schema)
+    const result = schema.validate(req.body)
 
     if(result.error){
-        res.status(400).send(result.error);
+        res.status(400).send(result.error.details[0].message);
         return;
     }
 
